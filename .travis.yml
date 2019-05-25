@@ -23,11 +23,8 @@ install:
 # This requires us to stop the pre-installed mysql server
 script:
     - sudo service mysql stop
-    - diff -u <(echo -n) <(gofmt -d `find . -name '*.go' | grep -Ev '/vendor/|/migration'`)
-    - go list ./... | grep -Ev '/vendor/|/migration' | xargs -L1 golint
-    - go vet `go list ./... | grep -v /vendor/`
-    - errcheck -ignore 'io:Close' -ignoretests `go list ./... | grep -v /vendor/`
-    - go test -v  ./...
+    - make check
+    - make test
     - $HOME/gopath/bin/goveralls -service=travis-ci
 
 after_success:
